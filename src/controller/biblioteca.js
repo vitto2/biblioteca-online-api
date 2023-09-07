@@ -1,17 +1,21 @@
-const books = require("../bd");
+const { books } = require("../bd");
 
 const listLibrary = (req, res) => {
   const { id } = req.params;
   const findbook = books.find((book) => book.id == id);
 
-  if (isNaN(id)) {
-    res.json({
-      mensagem: "O valor do parâmetro ID da URL não é um número válido.",
+  if (!id) {
+    return res.status(200).send(books);
+  }
+
+  if (isNaN(id) || id < 0) {
+    return res.json({
+      mensagem: "O valor do parâmetro ID da URL não é válido.",
     });
   }
 
   if (!findbook) {
-    res.json({
+    return res.json({
       mensagem: "Não existe livro para o ID informado.",
     });
   }
@@ -19,10 +23,10 @@ const listLibrary = (req, res) => {
   if (findbook) {
     return res.status(200).send(findbook);
   }
-
-  return res.status(200).send(books);
 };
 
+const addBook = (req, res) => {};
 module.exports = {
   listLibrary,
+  addBook,
 };
