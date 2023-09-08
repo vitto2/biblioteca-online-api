@@ -1,5 +1,5 @@
 const { books } = require("../bd");
-
+let { idIncrement } = require("../bd");
 const listLibrary = (req, res) => {
   const { id } = req.params;
   const findbook = books.find((book) => book.id == id);
@@ -25,7 +25,22 @@ const listLibrary = (req, res) => {
   }
 };
 
-const addBook = (req, res) => {};
+const addBook = (req, res) => {
+  const { titulo, autor, ano, numPaginas } = req.body;
+
+  const livro = {
+    id: idIncrement++,
+    titulo,
+    autor,
+    ano,
+    numPaginas,
+  };
+
+  books.push(livro);
+
+  res.send(livro);
+};
+
 module.exports = {
   listLibrary,
   addBook,
