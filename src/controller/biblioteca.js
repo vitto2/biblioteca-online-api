@@ -1,5 +1,6 @@
 const { books } = require("../bd");
 let { idIncrement } = require("../bd");
+
 const listLibrary = (req, res) => {
   const { id } = req.params;
   const findbook = books.find((book) => book.id == id);
@@ -41,7 +42,35 @@ const addBook = (req, res) => {
   res.send(livro);
 };
 
+const replaceBook = (req, res) => {
+  const { id } = req.params;
+  const { titulo, autor, ano, numPaginas } = req.body;
+  const findBookInList = books.find((book) => book.id == id);
+  const newBook = {
+    id: findBookInList.id,
+    titulo,
+    autor,
+    ano,
+    numPaginas,
+  };
+
+
+  if (!findBookInList) {
+    return res.json({
+      mensagem: "Não existe livro a ser substituído para o ID informado.",
+    });
+  }
+
+  books.splice(findBookInList, 1, newBook);
+
+  res.json({ mensagem: "Livro substituído." });
+};
+
+const AlterBook = (req, res) => {};
+
 module.exports = {
   listLibrary,
   addBook,
+  AlterBook,
+  replaceBook,
 };
